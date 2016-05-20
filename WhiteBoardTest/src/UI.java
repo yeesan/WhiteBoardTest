@@ -18,7 +18,7 @@ public class UI extends JFrame {
 	DShape presenter;
 	static Canvas canvas = new Canvas();
 	private static int shapeCounter = 0;
-	private String[] columnNames={"X","Y","Widt","Height"};
+	private String[] columnNames={"X","Y","Width","Height"};
 
 	
 	public UI(DShape presenter) {
@@ -36,17 +36,17 @@ public class UI extends JFrame {
 	    DefaultTableModel model = new DefaultTableModel(0, columnNames.length) ;
 		model.setColumnIdentifiers(columnNames);
 		
-		model.addRow(canvas.shapes.toArray());//<-------------------------------------------------
+		//model.addRow(canvas.shapes.toArray());//<-------------------------------------------------
 		JTable table = new JTable(model);
-		//JTable table = new JTable(data, columnNames);
+//		JTable table = new JTable(data, columnNames);
 		JScrollPane tablePane = new JScrollPane(table);
 
 		
 		
-		// addPanel
+	// addPanel
 		JPanel addPanel = new JPanel(new GridLayout(1, 5));
 		addPanel.add(new JLabel("Add"));
-		// Rect
+	// Btn Rect
 		JButton rect = new JButton("Rect");
 		rect.addActionListener(new ActionListener() {
 			@Override
@@ -55,7 +55,8 @@ public class UI extends JFrame {
 				DRect rect = new DRect(50, 50, 10, 20, Color.blue);
 				canvas.addShapes(rect);
 				canvas.paintComponent();
-				model.addRow(canvas.shapes.toArray());
+				DShape temp = canvas.shapes.get(canvas.shapes.size()-1);
+				model.addRow(new Object[] {Integer.toString(temp.model.x),Integer.toString(temp.model.y),Integer.toString(temp.model.height),Integer.toString(temp.model.width)});
 				System.out.println(canvas.shapes.toArray());
 				shapeCounter++;
 				
@@ -74,6 +75,8 @@ public class UI extends JFrame {
 				canvas.addShapes(oval);
 				canvas.paintComponent();
 		//		data[shapeCounter] = oval.getArray();
+				DShape temp = canvas.shapes.get(canvas.shapes.size()-1);
+				model.addRow(new Object[] {Integer.toString(temp.model.x),Integer.toString(temp.model.y),Integer.toString(temp.model.height),Integer.toString(temp.model.width)});
 				shapeCounter++;
 			}
 
