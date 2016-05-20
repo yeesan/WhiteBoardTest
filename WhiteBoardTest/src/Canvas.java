@@ -1,16 +1,20 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
 import javax.swing.JPanel;
 
+
+
 public class Canvas extends JPanel{
 	 
 	//how to update the shapes?
 	ArrayList<DShape> shapes = new ArrayList<>();
-
+	MovingAdapter ma = new MovingAdapter();
 	 // may need to use stack/queue to display last on top 
 	//list of shape objects and reflectes each after adding and editing..
 	//also defines the ordering of the shape as last shape comming first	
@@ -41,6 +45,8 @@ public class Canvas extends JPanel{
 			if (dshape instanceof DRect) {
 				System.out.println("DRect");
 				dshape.draw(getGraphics());
+				addMouseMotionListener(ma);//the mouse listener
+			    addMouseListener(ma);//the mouse listener
 
 			} else if (dshape instanceof DOval) {
 				System.out.println("DOval");
@@ -87,6 +93,35 @@ public class Canvas extends JPanel{
 		}
 	}
 
+	 //sort of working
+	  class MovingAdapter extends MouseAdapter {
+
+		    private int x;
+
+		    private int y;
+
+		    public void mousePressed(MouseEvent e) {
+		      x = e.getX();
+		      y = e.getY();
+		    }
+
+		    public void mouseDragged(MouseEvent e) {
+
+		      int dx = e.getX() - x;
+		      int dy = e.getY() - y;
+		      repaint();
+		      x += dx;
+		      y += dy;
+
+		     /* if (myRect.getBounds2D().contains(x, y)) {
+		        myRect.x += dx;
+		        myRect.y += dy;
+		        repaint();
+		      }
+		      x += dx;
+		      y += dy;*/
+		    }
+		  }
 
 
 }
