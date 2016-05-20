@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
 
 
 public class UI extends JFrame {
@@ -17,7 +19,7 @@ public class UI extends JFrame {
 	static Canvas canvas = new Canvas();
 	private static int shapeCounter = 0;
 	private String[] columnNames={"X","Y","Widt","Height"};
-	private static Object[][] data= {{4,5,6,7},{4,5,6,7},{4,5,6,7},{4,5,6,7},{4,5,6,7}};
+
 	
 	public UI(DShape presenter) {
 		this.presenter = presenter;
@@ -29,21 +31,34 @@ public class UI extends JFrame {
 
 		// canvas
 
+		// tablePanel: doesn't update unless u click on the entry
+	//	int numRows = 5 ;
+	    DefaultTableModel model = new DefaultTableModel(0, columnNames.length) ;
+		model.setColumnIdentifiers(columnNames);
+		
+		model.addRow(canvas.shapes.toArray());//<-------------------------------------------------
+		JTable table = new JTable(model);
+		//JTable table = new JTable(data, columnNames);
+		JScrollPane tablePane = new JScrollPane(table);
+
+		
+		
 		// addPanel
 		JPanel addPanel = new JPanel(new GridLayout(1, 5));
 		addPanel.add(new JLabel("Add"));
 		// Rect
 		JButton rect = new JButton("Rect");
 		rect.addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				DRect rect = new DRect(50, 50, 10, 20, Color.blue);
 				canvas.addShapes(rect);
 				canvas.paintComponent();
-				data[shapeCounter] = rect.getArray();
+				model.addRow(canvas.shapes.toArray());
+				System.out.println(canvas.shapes.toArray());
 				shapeCounter++;
+				
 			}
 
 		});
@@ -58,7 +73,7 @@ public class UI extends JFrame {
 				DOval oval = new DOval(60, 10, 10, 20, Color.red);
 				canvas.addShapes(oval);
 				canvas.paintComponent();
-				data[shapeCounter] = oval.getArray();
+		//		data[shapeCounter] = oval.getArray();
 				shapeCounter++;
 			}
 
@@ -68,15 +83,7 @@ public class UI extends JFrame {
 		// colorPanel
 		// textPanel
 		// posPanel
-		// tablePanel: doesn't update unless u click on the entry
-		//	int numRows = 5 ;
-		DefaultTableModel model = new DefaultTableModel(0, columnNames.length) ;
-		model.setColumnIdentifiers(columnNames);
-	//	model.addRow(data);//<-------------------------------------------------
-		JTable table = new JTable(model);
-		//JTable table = new JTable(data, columnNames);
-		JScrollPane tablePane = new JScrollPane(table);
-		
+
 		// controls={addPanel, colorPanel,textPanel,posPanel, tablePanel}
 		JPanel controls = new JPanel();
 		controls.setLayout(new GridLayout(5, 1));
@@ -100,6 +107,7 @@ public class UI extends JFrame {
 	public static Canvas getCanvas() {
 		return canvas;
 	}
+
 	
 
 
