@@ -69,10 +69,14 @@ public class UI extends JFrame {
 		// textPanel
 		// posPanel
 		// tablePanel: doesn't update unless u click on the entry
-		
-		JTable table = new JTable(data, columnNames);
+		//	int numRows = 5 ;
+		DefaultTableModel model = new DefaultTableModel(0, columnNames.length) ;
+		model.setColumnIdentifiers(columnNames);
+	//	model.addRow(data);//<-------------------------------------------------
+		JTable table = new JTable(model);
+		//JTable table = new JTable(data, columnNames);
 		JScrollPane tablePane = new JScrollPane(table);
-
+		
 		// controls={addPanel, colorPanel,textPanel,posPanel, tablePanel}
 		JPanel controls = new JPanel();
 		controls.setLayout(new GridLayout(5, 1));
